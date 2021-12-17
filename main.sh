@@ -43,25 +43,18 @@ send_response() {
         return
     fi
 
-    if [[ -z "${hosts[${host:*}]}" ]]; then
+    if [[ -z "${hosts[${host%:*}]}" ]]; then
         default_response "The website you requested is not configured on this server"
         return 
     fi
 
-    if [[ ! -s "${hosts[$host:*]}" ]]; then 
+    if [[ ! -s "${hosts[${host%:*}]}" ]]; then 
         default_response "The website you requested does not have a valid configuration file"
         return 
     fi
 
-    if source "${hosts[$host:*]}"; then
-        if declare -f generate_response >/dev/null 2>&1 ; then
-            generate_response
-            unset generate_response
-            return 
-        else
-            default_response "Config file does not provide the expected function"
-            return 
-        fi
+    if bash ${hosts[${host%:*}]}; then
+        
     fi
 
     default_response "How did you even get here?"

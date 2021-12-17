@@ -53,11 +53,8 @@ send_response() {
         return 
     fi
 
-    if bash ${hosts[${host%:*}]}; then
-        
-    fi
-
-    default_response "How did you even get here?"
+    bash ${hosts[${host%:*}]}
+    return 
 } 
 
 read_request_then_respond() {

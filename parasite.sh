@@ -18,7 +18,7 @@ case "$uri" in
         echo "<div style='max-width: 800px; margin: auto;'>"
         h1 Hello
         echo "<hr/>"
-        p This is the home page
+        p "This is the home page"
         echo "</div>"
         echo "</body>"
         echo "</html>"

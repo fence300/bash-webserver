@@ -43,7 +43,7 @@ send_response() {
         return
     fi
 
-    if [[ -z "${hosts[$host:*]}" ]]; then
+    if [[ -z "${hosts[${host:*}]}" ]]; then
         default_response "The website you requested is not configured on this server"
         return 
     fi

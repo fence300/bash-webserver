@@ -2,7 +2,7 @@
 
 
 
-
+echo Executing Parasite >&2
 echo "HTTP/1.1"
 
 case "$uri" in

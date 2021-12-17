@@ -14,7 +14,6 @@ hosts["parasite"]="./parasite.sh"
 
 ## Functions
 
-
 default_response() {
     echo "HTTP/1.1"
     echo "Content-Type: text/html"

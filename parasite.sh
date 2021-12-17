@@ -1,8 +1,9 @@
 #!/bin/bash
 
+tag() { echo "<$1>$2</$1>";}
+h1() { tag h1 "$1";}
+p() { tag p "$1";}
 
-
-echo Executing Parasite >&2
 echo "HTTP/1.1"
 
 case "$uri" in
@@ -11,13 +12,13 @@ case "$uri" in
         echo 
         echo "<html>"
         echo "<head>"
-        echo "<title>Parasite</title>"
+        tag title Parasite
         echo "</head>"
         echo "<body>"
         echo "<div style='max-width: 800px; margin: auto;'>"
-        echo "<h1>Hello</h1>"
+        h1 Hello
         echo "<hr/>"
-        echo "<p>This is the home page</p>"
+        p This is the home page
         echo "</div>"
         echo "</body>"
         echo "</html>"

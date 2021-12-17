@@ -4,7 +4,29 @@
 port=8080
 fifo=/tmp/fifo
 
-# functions
+
+
+# load hosts configurations
+declare -A hosts=()
+
+hosts["parasite"]="./parasite.sh"
+
+
+## Functions
+
+
+default_response() {
+    echo "HTTP/1.1"
+    echo "Content-Type: text/html"
+    echo
+    echo "<html>"
+    echo "<h1>Default response</h1>"
+    echo "<h1>Date: $(date)</h1>"
+    echo "<hr/>"
+    echo "<p>$1</p>"
+    echo "</html>"    
+}
+
 send_response() {
 
     if [[ ! "$method" == GET ]]; then
@@ -16,10 +38,33 @@ send_response() {
         return
     fi
 
-    echo "HTTP/1.1"
-    echo "Content-Type: text/html"
-    echo
-    echo "<html><h1>$(date)</h1></html>"
+    if [[ -z "$host" ]]; then
+        default_response "Somehow, your Host header was blank"
+        return
+    fi
+
+    if [[ -z "${hosts[$host:*]}" ]]; then
+        default_response "The website you requested is not configured on this server"
+        return 
+    fi
+
+    if [[ ! -s "${hosts[$host:*]}" ]]; then 
+        default_response "The website you requested does not have a valid configuration file"
+        return 
+    fi
+
+    if source "${hosts[$host:*]}"; then
+        if declare -f generate_response >/dev/null 2>&1 ; then
+            generate_response
+            unset generate_response
+            return 
+        else
+            default_response "Config file does not provide the expected function"
+            return 
+        fi
+    fi
+
+    default_response "How did you even get here?"
 } 
 
 read_request_then_respond() {

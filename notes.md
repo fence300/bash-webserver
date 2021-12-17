@@ -48,3 +48,25 @@ This change is actually relatively minor. Remember how a series of commands encl
 We have added a section after `settings` but before the actionable logic part of the script where we assign these logic blocks to a name.  And then, when it is time to execute that logic, we just call those functions by name and the code defined in curly brackets will be executed.
 
 You should be able to observe the same behavior when you execute the example, even though we have rearranged the logic and given it a name that tells us what each function is doing.
+
+# Stage 5
+# What's different now?
+We've implemented a named pipe!  A `fifo` file means First In, First Out.
+
+In our compound commands previously, the pipe character `|` causes the output from one command on STDOUT to be used as input for the next command on STDIN
+
+But with named pipes, we can have one program which writes each line of output to a file and another program which reads each line from that file for input.
+
+The process that writes to the file will hang if there is no process to read from that file.
+
+In the example the `cat` command will read each line continuously from the file and redirect that line as input to the `nc` command, which will send it as a response to any incoming request.
+
+The `nc` command will read incoming requests from the socket and then pass them on STDOUT to be read by the function `read_request_then_respond`
+
+The function from the previous example `read_request` has been modified slightly.  Now, it will read the incoming request *BEFORE* generating the response. In later stages, this will allow us to respond dynamically, instead of serving the same page every time.
+
+After the function `read_request_then_respond` has finished reading the incoming request, it will generate the response which is then written to STDOUT and into the named pipe (fifo) file.
+
+The `cat` command from the beginning of this chain then outputs the generated response into `nc` as described above.
+
+When `read_request_then_respond` has finished generating and sending the response, the last thing it will do is `killall nc` to close the connection.

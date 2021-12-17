@@ -2,6 +2,7 @@
 
 # Settings:
 port=8080
+fifo=/tmp/fifo
 
 # functions
 send_response() {
@@ -11,14 +12,16 @@ send_response() {
     echo "<html><h1>$(date)</h1></html>"
 } 
 
-read_request() {
+read_request_then_respond() {
     while read line; do
         if [[ "$line" == $'\r' ]]; then
             break
         fi
     done
 
+    send_response
+
     killall nc
 }
 
-send_response | nc -l $port | read_request
+cat $fifo | nc -l $port | read_request_then_respond  > $fifo

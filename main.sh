@@ -53,7 +53,7 @@ send_response() {
         return 
     fi
 
-    bash ${hosts[${host%:*}]}
+    env uri="$uri" host="$host" bash "${hosts[${host%:*}]}"
     return 
 } 
 

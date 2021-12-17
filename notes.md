@@ -28,5 +28,3 @@ We still have the `nc` command listening on whatever port you set in the setting
 
 This stage is to show you that the blank line at the end of meaningful output is not really blank.  Before the newline character which `read` will interpret as the end of the line, there is another invisible character -- a carriage return.
 
-# 
-

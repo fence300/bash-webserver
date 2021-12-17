@@ -78,3 +78,17 @@ Up to this point, we have written a program that starts up a listening server, l
 Now, we have encased that logic in a while loop for the condition `true` which will always return true.
 
 So now, when the program finishes listening and responding to an incoming connection, it will start listening for another one immediately.
+
+# Stage 7
+### What's new?
+In this stage we start to read the information passed into the request and change the response accordingly.
+
+- At the top of the function `read_request_then_respond` we locally scope some variables.
+- Inside of the while loop that reads each line of the request that the browser sent to us, we are looking for certain lines
+    - one of these lines begins with GET, indicating that this is a GET request.  This webserver cannot support POST requests. 
+    - the GET line will also inform the `uri` -- basically the endpoint that the user wants to load.  Detecting this will allow us to have multiple endpoints.
+    - another line we're looking for is the specification `Host:` -- this will allow us to embed the domain name of our website into the web page, so that the website can be moved to different domain names.
+    - another distant possibility is to have the webserver serve *multiple* websites -- each by a different hostname.  In order to do that, we would need to detect the requested host and then serve different content accordingly
+- These variables are locally scoped. But they will be passed into the next function `send_response` because the function `send_response` is called *inside* of th function `read_request_then_respond`
+- The function `send_response` then checks to see if the method is GET or something else.  If the request is not a GET request, then it will send an HTTP status 405 page and quit early.
+- Otherwise, it will continue to send the content for this page.

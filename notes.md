@@ -40,3 +40,11 @@ You may notice that the actionable code in `main.sh` became a lot more complicat
 - When the while loop reads a line that contains only a carriage return, it will break and stop reading lines.
 - The next thing that the second anonymous function does after the while-loop detects the end of the meaningful request is to `killall nc` which will close the connection
 - If you do not close the connection by ending the listening `nc` process, then the browser may simply hang and eventually time out even though it received a response.
+
+# Stage 4
+### What's changed since stage 3
+This change is actually relatively minor. Remember how a series of commands enclosed in `{ curly brackets }` is an anonymous function?  Well, the functions are not anonymous anymore.  
+
+We have added a section after `settings` but before the actionable logic part of the script where we assign these logic blocks to a name.  And then, when it is time to execute that logic, we just call those functions by name and the code defined in curly brackets will be executed.
+
+You should be able to observe the same behavior when you execute the example, even though we have rearranged the logic and given it a name that tells us what each function is doing.

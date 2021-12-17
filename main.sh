@@ -3,13 +3,15 @@
 # Settings:
 port=8080
 
-
-{
+# functions
+send_response() {
     echo "HTTP/1.1"
     echo "Content-Type: text/html"
     echo
     echo "<html><h1>$(date)</h1></html>"
-} | nc -l $port | {
+} 
+
+read_request() {
     while read line; do
         if [[ "$line" == $'\r' ]]; then
             break
@@ -18,3 +20,5 @@ port=8080
 
     killall nc
 }
+
+send_response | nc -l $port | read_request

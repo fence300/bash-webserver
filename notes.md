@@ -70,3 +70,11 @@ After the function `read_request_then_respond` has finished reading the incoming
 The `cat` command from the beginning of this chain then outputs the generated response into `nc` as described above.
 
 When `read_request_then_respond` has finished generating and sending the response, the last thing it will do is `killall nc` to close the connection.
+
+# Stage 6
+### What's new?
+Up to this point, we have written a program that starts up a listening server, listens for one incoming connection, responds to that incoming connection, and then closes the connection.
+
+Now, we have encased that logic in a while loop for the condition `true` which will always return true.
+
+So now, when the program finishes listening and responding to an incoming connection, it will start listening for another one immediately.

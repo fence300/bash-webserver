@@ -14,6 +14,7 @@ send_response() {
 
 read_request_then_respond() {
     while read line; do
+        echo -e "$line" >&2
         if [[ "$line" == $'\r' ]]; then
             break
         fi

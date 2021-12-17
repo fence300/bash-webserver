@@ -24,6 +24,9 @@ read_request_then_respond() {
     killall nc
 }
 
+rm -f $fifo 
+mkfifo $fifo 
+
 while true; do
     cat $fifo | nc -l $port | read_request_then_respond  > $fifo
 done

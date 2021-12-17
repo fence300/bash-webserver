@@ -28,3 +28,15 @@ We still have the `nc` command listening on whatever port you set in the setting
 
 This stage is to show you that the blank line at the end of meaningful output is not really blank.  Before the newline character which `read` will interpret as the end of the line, there is another invisible character -- a carriage return.
 
+# Stage 3
+### What's going on in this example
+You may notice that the actionable code in `main.sh` became a lot more complicated.  Let's break it down.
+- These `{ curly brackets }` define an anonymous function in bash.  That is to say, all of the logic inside of them will be grouped together.
+- The first set of curly brackets outputs a very simple webpage response.
+- The pipe at the end of the curly brackets redirects all output on STDOUT to be read as input on STDIN by the `nc` command
+- The `nc` command will send that input as a response to the next incoming request.
+- The pipe after the `nc` command will cause the next anonymous function to read the output from `nc` as input
+- The while loop will process each line
+- When the while loop reads a line that contains only a carriage return, it will break and stop reading lines.
+- The next thing that the second anonymous function does after the while-loop detects the end of the meaningful request is to `killall nc` which will close the connection
+- If you do not close the connection by ending the listening `nc` process, then the browser may simply hang and eventually time out even though it received a response.

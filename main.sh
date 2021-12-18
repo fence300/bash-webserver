@@ -23,7 +23,7 @@ default_response() {
     echo "<h1>Date: $(date)</h1>"
     echo "<hr/>"
     echo "<p>$1</p>"
-    echo "</html>"    
+    echo "</html>"
 }
 
 send_response() {
